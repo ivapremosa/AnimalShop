@@ -16,6 +16,7 @@ ___
 * Nefunkcionalne zahteve
     * Mikrostoritev mora biti sposobna obvladati vsaj 1000 zahtev na sekundo.
     * Vsaka zahteva mora biti obdelana v manj kot 10 sekund.
+    * Mikrostoritev rabi biti zanesljiva in na volju 24/7, kar pomeni da mora biti sposobna obdelati vse uporabniki tudi v primeru nepričakovanih motenj v delovanju.
 
 ___
     
