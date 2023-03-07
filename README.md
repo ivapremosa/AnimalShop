@@ -5,11 +5,11 @@ AnimalShop je informacijski sistem in vključuje tri mikrostoritve in spletno ap
 
 ---
 Mikrostoritve so razdeljene na:
-* Mikrostoritev za avtentikacijo 
-    Zagotavlja API za registracijo, prijavo in ponastavitev gesla. Uporabnike shranjuje v podatkovno bazo in uporablja šifriranje in sol za varnost gesel.
+* Mikrostoritev za avtentikacijo <br />
+_ _ _ Zagotavlja API za registracijo, prijavo in ponastavitev gesla. Uporabnike shranjuje v podatkovno bazo in uporablja šifriranje in sol za varnost gesel.
 
 * Mikrostoritev za naročilo
-    Zagotavlja API za ustvarjanje, brisanje in posodabljanje naročil. 
+____ Zagotavlja API za ustvarjanje, brisanje in posodabljanje naročil. 
 
 * Mikrosoritev za katalog izdelkov
     Zagotavlja API za dodajanje, posodabljanje in brisanje izdelkov. 
