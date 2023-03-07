@@ -16,7 +16,7 @@ ___
 * Nefunkcionalne zahteve
     * Mikrostoritev mora biti sposobna obvladati vsaj 1000 zahtev na sekundo.
     * Vsaka zahteva mora biti obdelana v manj kot 10 sekund.
-    * Zaloga mora biti preverjanja vsaj v 1 uri od naročila. 
+    * Zaloga mora biti preverjenja vsaj v 1 uri od naročila. 
 
 ___
     
