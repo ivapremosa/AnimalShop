@@ -2,5 +2,5 @@
 ##Mikrostoritev za avtentikacijo uporabnikov
 ___
 
-![Screenshot](UserService.png)
+![Screenshot](/microservices/UserService.png "Organized Layerd using DDD")
 
