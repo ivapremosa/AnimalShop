@@ -16,6 +16,8 @@ ___
 * Nefunkcionalne zahteve
     * Mikrostoritev mora biti sposobna obvladati vsaj 1000 zahtev na sekundo.
     * Vsaka zahteva mora biti obdelana v manj kot 10 sekund.
+
+___
     
 
 
