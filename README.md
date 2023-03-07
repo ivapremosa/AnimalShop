@@ -8,11 +8,11 @@ Mikrostoritve so razdeljene na:
 * Mikrostoritev za avtentikacijo <br />
     Zagotavlja API za registracijo, prijavo in ponastavitev gesla. Uporabnike shranjuje v podatkovno bazo in uporablja šifriranje in sol za varnost gesel.
 
-* Mikrostoritev za naročilo
-____ Zagotavlja API za ustvarjanje, brisanje in posodabljanje naročil. 
+* Mikrostoritev za naročilo <br />
+Zagotavlja API za ustvarjanje, brisanje in posodabljanje naročil. 
 
-* Mikrosoritev za katalog izdelkov
-    Zagotavlja API za dodajanje, posodabljanje in brisanje izdelkov. 
+* Mikrosoritev za katalog izdelkov <br />
+Zagotavlja API za dodajanje, posodabljanje in brisanje izdelkov. 
 
 ---
 
