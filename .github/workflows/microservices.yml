@@ -1,0 +1,89 @@
+name: Microservices CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'microservices/OrderService/**'
+      - 'microservices/UserService/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'microservices/OrderService/**'
+      - 'microservices/UserService/**'
+
+jobs:
+  order-service:
+    name: Build and Test OrderService
+    if: contains(github.event.head_commit.modified, 'microservices/OrderService/') || contains(github.event.pull_request.title, 'OrderService')
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build with Maven
+      run: |
+        cd microservices/OrderService
+        mvn -B package --file pom.xml
+
+    - name: Run tests
+      run: |
+        cd microservices/OrderService
+        mvn test
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: orderservice-jar
+        path: microservices/OrderService/target/*.jar
+
+  user-service:
+    name: Build and Test UserService
+    if: contains(github.event.head_commit.modified, 'microservices/UserService/') || contains(github.event.pull_request.title, 'UserService')
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        cache-dependency-path: microservices/UserService/package-lock.json
+
+    - name: Install dependencies
+      run: |
+        cd microservices/UserService
+        npm ci
+
+    - name: Run tests
+      run: |
+        cd microservices/UserService
+        npm test
+
+    - name: Build
+      run: |
+        cd microservices/UserService
+        npm run build --if-present
+
+    - name: Build Docker image
+      run: |
+        cd microservices/UserService
+        docker build -t userservice .
+
+  # Optional: Add a deployment job that depends on both services
+  # deploy:
+  #   needs: [order-service, user-service]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Deploy services
+  #       run: |
+  #         echo "Add your deployment steps here" 
