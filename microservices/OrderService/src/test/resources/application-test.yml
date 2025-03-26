@@ -2,14 +2,4 @@
 spring:
   data:
     mongodb:
-      auto-index-creation: true
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
-      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
-  mongodb:
-    embedded:
-      version: 4.4.2
-  test:
-    database:
-      replace: none 
+      auto-index-creation: true 
