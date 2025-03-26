@@ -7,6 +7,7 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "client": "node src/client.js",
+    "test": "node src/tests/repository.test.js && node src/tests/testClient.js",
     "test:repo": "node src/tests/repository.test.js"
   },
   "keywords": [],
