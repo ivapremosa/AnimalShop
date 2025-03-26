@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: OrderService CI
 
 # This workflow will run on push and pull request events
 on:
