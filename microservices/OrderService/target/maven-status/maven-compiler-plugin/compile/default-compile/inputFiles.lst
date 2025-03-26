@@ -1,7 +1,7 @@
-/Users/NBogosavljevic/Documents/faks/ITA/src/main/java/com/example/demo/controller/OrderController.java
-/Users/NBogosavljevic/Documents/faks/ITA/src/main/java/com/example/demo/repository/OrderRepository.java
-/Users/NBogosavljevic/Documents/faks/ITA/src/main/java/com/example/demo/controller/HelloController.java
-/Users/NBogosavljevic/Documents/faks/ITA/src/main/java/com/example/demo/DemoApplication.java
-/Users/NBogosavljevic/Documents/faks/ITA/src/main/java/com/example/demo/model/Order.java
-/Users/NBogosavljevic/Documents/faks/ITA/src/main/java/com/example/demo/dto/OrderRequest.java
-/Users/NBogosavljevic/Documents/faks/ITA/src/main/java/com/example/demo/service/OrderService.java
+C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\controller\OrderController.java
+C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\DemoApplication.java
+C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\dto\OrderRequest.java
+C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\controller\HelloController.java
+C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\repository\OrderRepository.java
+C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\model\Order.java
+C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\service\OrderService.java
