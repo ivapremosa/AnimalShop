@@ -28,7 +28,9 @@ RUN npm install --production
 # Copy built files from builder stage
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/proto ./proto
-COPY --from=builder /app/logs ./logs
+
+# Create logs directory with appropriate permissions
+RUN mkdir -p logs && chown -R node:node logs
 
 # Create non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
