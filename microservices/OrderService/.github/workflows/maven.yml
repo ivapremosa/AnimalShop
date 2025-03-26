@@ -4,12 +4,19 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'microservices/OrderService/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'microservices/OrderService/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: microservices/OrderService
 
     steps:
     - uses: actions/checkout@v4
