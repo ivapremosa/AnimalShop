@@ -3,19 +3,17 @@ name: Microservices CI/CD
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'microservices/OrderService/**'
-      - 'microservices/UserService/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'microservices/OrderService/**'
-      - 'microservices/UserService/**'
 
 jobs:
   order-service:
     name: Build and Test OrderService
-    if: contains(github.event.head_commit.modified, 'microservices/OrderService/') || contains(github.event.pull_request.title, 'OrderService')
+    if: |
+      contains(github.event.head_commit.message, 'OrderService') ||
+      contains(github.event.pull_request.title, 'OrderService') ||
+      contains(github.event.head_commit.modified, 'microservices/OrderService/') ||
+      contains(toJson(github.event.head_commit.modified), 'OrderService')
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +44,11 @@ jobs:
 
   user-service:
     name: Build and Test UserService
-    if: contains(github.event.head_commit.modified, 'microservices/UserService/') || contains(github.event.pull_request.title, 'UserService')
+    if: |
+      contains(github.event.head_commit.message, 'UserService') ||
+      contains(github.event.pull_request.title, 'UserService') ||
+      contains(github.event.head_commit.modified, 'microservices/UserService/') ||
+      contains(toJson(github.event.head_commit.modified), 'UserService')
     runs-on: ubuntu-latest
 
     steps:
