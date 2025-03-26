@@ -7,7 +7,7 @@ ___
 ___
 
 * Funkcionalne zahteve
-    * Ustvaranje naročil: Mikrostoritev mora omogočati uporabnikom, da ustvarijo naročilo.
+    * Ustvarjanje naročil: Mikrostoritev mora omogočati uporabnikom, da ustvarijo naročilo.
     * Preverjanje zaloge: Mikrostoritev mora preveriti stanje zaloge, preden potrdi naročilo.
     * Posodabljanje naročil: Mikrostoritev mora omogočati uporabnikom, da posodobijo naročilo.
     * Obdelava naročila: Mikrostoritev mora obdelati naročilo in ga poslati na ustrezen naslov za dostavo.
@@ -19,6 +19,9 @@ ___
     * Zaloga mora biti preverjenja vsaj v 1 uri od naročila. 
 
 ___
+
+## CI/CD
+This project uses GitHub Actions for continuous integration. Unit tests are automatically run on every push to the main branch.
     
 
 
