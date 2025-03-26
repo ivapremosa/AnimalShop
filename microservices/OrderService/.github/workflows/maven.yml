@@ -1,5 +1,6 @@
 name: Java CI with Maven
 
+# This workflow will run on push and pull request events
 on:
   push:
     branches: [ "main" ]
