@@ -51,6 +51,12 @@ jobs:
       contains(toJson(github.event.head_commit.modified), 'UserService')
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
     steps:
     - uses: actions/checkout@v4
 
@@ -67,6 +73,8 @@ jobs:
         npm ci
 
     - name: Run tests
+      env:
+        MONGODB_URI: mongodb://localhost:27017/testdb
       run: |
         cd microservices/UserService
         npm test
