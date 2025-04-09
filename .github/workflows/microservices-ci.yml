@@ -1,0 +1,90 @@
+name: Microservices CI
+
+on:
+  push:
+    paths:
+      - 'microservices/**'
+  pull_request:
+    paths:
+      - 'microservices/**'
+
+jobs:
+  test-order-service:
+    name: Build and Test OrderService
+    if: contains(github.event.head_commit.modified, 'microservices/OrderService/') || contains(github.event.pull_request.title, 'OrderService')
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Build and Test with Maven
+      run: |
+        cd microservices/OrderService
+        mvn clean test
+
+  test-user-service:
+    name: Build and Test UserService
+    if: contains(github.event.head_commit.modified, 'microservices/UserService/') || contains(github.event.pull_request.title, 'UserService')
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install Dependencies
+      run: |
+        cd microservices/UserService
+        npm install
+        
+    - name: Run Tests
+      run: |
+        cd microservices/UserService
+        npm test
+
+  test-offer-service:
+    name: Build and Test OfferService
+    if: contains(github.event.head_commit.modified, 'microservices/OfferService/') || contains(github.event.pull_request.title, 'OfferService')
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        cd microservices/OfferService
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio pytest-cov
+
+    - name: Run tests
+      run: |
+        cd microservices/OfferService
+        python -m pytest tests/ --cov=services --cov=models --cov-report=xml
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./microservices/OfferService/coverage.xml
+        flags: offerservice
+        name: OfferService-coverage 
