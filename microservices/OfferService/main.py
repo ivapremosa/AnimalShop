@@ -10,6 +10,9 @@ from models.offer import Offer
 from config.logging import setup_logging
 import logging
 
+# Trigger GitHub Actions workflow
+# This service handles offers and discounts for products
+
 # Setup logging
 logger = setup_logging()
 
