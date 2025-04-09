@@ -34,6 +34,9 @@ class OfferService:
         if offer.id in self.offers:
             raise ValueError("Offer already exists")
         
+        if offer.discount_percentage < 0:
+            raise ValueError("Discount percentage cannot be negative")
+        
         self.offers[offer.id] = offer
         await self._publish_offer_event('offer_created', offer)
         return offer
@@ -70,7 +73,15 @@ class OfferService:
                 'is_active': offer.is_active
             }
         }
-        self.conn.send(body=json.dumps(message), destination='/topic/offers')
+        try:
+            self.conn.send(
+                body=json.dumps(message),
+                destination='/topic/offers',
+                headers={'persistent': 'true'}
+            )
+        except Exception as e:
+            # Log the error but don't let it affect the offer creation/update
+            print(f"Failed to send message: {e}")
 
     def _handle_offer_created(self, message):
         data = message['data']
