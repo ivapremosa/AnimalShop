@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://admin:admin@ita.vittz13.mongodb.net/ITA1?retryWrites=true&w=majority&ssl=true&tls=true&tlsAllowInvalidCertificates=true&tlsInsecure=true
+      database: ITA1
+      auto-index-creation: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.example.demo: DEBUG
+    org.springframework.data.mongodb: DEBUG
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    org.mongodb.driver: DEBUG 

@@ -1,7 +1,8 @@
 com\example\demo\controller\HelloController.class
 com\example\demo\DemoApplication.class
+com\example\demo\dto\OrderRequest.class
 com\example\demo\service\OrderService.class
 com\example\demo\model\Order.class
 com\example\demo\controller\OrderController.class
-com\example\demo\dto\OrderRequest.class
+com\example\demo\config\OpenApiConfig.class
 com\example\demo\repository\OrderRepository.class

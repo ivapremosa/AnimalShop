@@ -4,32 +4,22 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "8081:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/orderdb
-    depends_on:
-      mongodb:
-        condition: service_healthy
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://admin:admin@ita.vittz13.mongodb.net/ITA1?retryWrites=true&w=majority
+      - SPRING_DATA_MONGODB_DATABASE=ITA1
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
-      - spring-mongo-net
-
+      - orderservice-network
   mongodb:
     image: mongo:latest
     ports:
-      - "27018:27017"
+      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-    networks:
-      - spring-mongo-net
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
 
 networks:
-  spring-mongo-net:
+  orderservice-network:
     driver: bridge
 
 volumes:

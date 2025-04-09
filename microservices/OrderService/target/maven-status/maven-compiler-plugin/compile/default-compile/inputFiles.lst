@@ -1,6 +1,7 @@
 C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\controller\OrderController.java
 C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\DemoApplication.java
 C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\dto\OrderRequest.java
+C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\config\OpenApiConfig.java
 C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\controller\HelloController.java
 C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\repository\OrderRepository.java
 C:\Users\User\Desktop\AnimalShop\microservices\OrderService\src\main\java\com\example\demo\model\Order.java

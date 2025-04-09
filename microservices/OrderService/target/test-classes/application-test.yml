@@ -1,0 +1,5 @@
+# Test configuration for MongoDB
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true 

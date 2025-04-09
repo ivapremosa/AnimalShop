@@ -1,0 +1,9 @@
+{
+  "name": "order-insert-script",
+  "version": "1.0.0",
+  "description": "Script to insert test order into MongoDB",
+  "main": "insertOrder.js",
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  }
+} 
