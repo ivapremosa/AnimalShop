@@ -2,8 +2,7 @@ import asyncio
 import stomp
 from typing import List, Optional
 from datetime import datetime
-from ..models.offer import Offer
-from ..config.database import get_database, get_sync_database, COLLECTION_NAME
+from models.offer import Offer
 import json
 
 class OfferService:
@@ -20,8 +19,6 @@ class OfferService:
     class OfferListener(stomp.ConnectionListener):
         def __init__(self, service):
             self.service = service
-            self.db = get_sync_database()
-            self.collection = self.db[COLLECTION_NAME]
 
         def on_message(self, frame):
             try:
@@ -34,56 +31,32 @@ class OfferService:
                 print(f"Error processing message: {e}")
 
     async def create_offer(self, offer: Offer) -> Offer:
-        db = await get_database()
-        collection = db[COLLECTION_NAME]
-        
-        # Check if offer already exists
-        existing_offer = await collection.find_one({"id": offer.id})
-        if existing_offer:
+        if offer.id in self.offers:
             raise ValueError("Offer already exists")
         
-        # Convert offer to dict and insert
-        offer_dict = offer.dict()
-        await collection.insert_one(offer_dict)
-        
+        self.offers[offer.id] = offer
         await self._publish_offer_event('offer_created', offer)
         return offer
 
     async def update_offer(self, offer_id: str, offer: Offer) -> Offer:
-        db = await get_database()
-        collection = db[COLLECTION_NAME]
-        
-        # Check if offer exists
-        existing_offer = await collection.find_one({"id": offer_id})
-        if not existing_offer:
+        if offer_id not in self.offers:
             raise ValueError("Offer not found")
         
-        # Update offer
-        offer_dict = offer.dict()
-        await collection.update_one({"id": offer_id}, {"$set": offer_dict})
-        
+        self.offers[offer_id] = offer
         await self._publish_offer_event('offer_updated', offer)
         return offer
 
     async def get_offer(self, offer_id: str) -> Optional[Offer]:
-        db = await get_database()
-        collection = db[COLLECTION_NAME]
-        offer_dict = await collection.find_one({"id": offer_id})
-        return Offer(**offer_dict) if offer_dict else None
+        return self.offers.get(offer_id)
 
     async def get_all_offers(self) -> List[Offer]:
-        db = await get_database()
-        collection = db[COLLECTION_NAME]
-        offers = []
-        async for offer_dict in collection.find():
-            offers.append(Offer(**offer_dict))
-        return offers
+        return list(self.offers.values())
 
     async def delete_offer(self, offer_id: str) -> bool:
-        db = await get_database()
-        collection = db[COLLECTION_NAME]
-        result = await collection.delete_one({"id": offer_id})
-        return result.deleted_count > 0
+        if offer_id in self.offers:
+            del self.offers[offer_id]
+            return True
+        return False
 
     async def _publish_offer_event(self, event_type: str, offer: Offer):
         message = {
@@ -109,7 +82,7 @@ class OfferService:
             end_date=datetime.fromisoformat(data['end_date']),
             is_active=data['is_active']
         )
-        self.collection.insert_one(offer.dict())
+        self.offers[offer.id] = offer
 
     def _handle_offer_updated(self, message):
         data = message['data']
@@ -121,4 +94,4 @@ class OfferService:
             end_date=datetime.fromisoformat(data['end_date']),
             is_active=data['is_active']
         )
-        self.collection.update_one({"id": offer.id}, {"$set": offer.dict()}) 
+        self.offers[offer.id] = offer 
