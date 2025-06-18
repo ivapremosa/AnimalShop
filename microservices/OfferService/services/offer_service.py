@@ -8,6 +8,7 @@ import json
 class OfferService:
     def __init__(self):
         self.conn = None
+        self.offers = {}
         self._setup_message_broker()
 
     def _setup_message_broker(self):
