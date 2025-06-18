@@ -46,7 +46,13 @@ jobs:
         DOCKER_BUILDKIT: 1
 
     - name: Upload JAR artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: order-service-jar
-        path: microservices/OrderService/target/*.jar 
+        path: microservices/OrderService/target/*.jar
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: path/to/results 
