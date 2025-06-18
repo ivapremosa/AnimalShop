@@ -31,7 +31,7 @@ const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Micro frontend loading states
+  // Micro frontend loading states :)
   const [authLoaded, setAuthLoaded] = useState(false);
   const [offersLoaded, setOffersLoaded] = useState(false);
   const [ordersLoaded, setOrdersLoaded] = useState(false);
