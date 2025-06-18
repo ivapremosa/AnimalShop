@@ -12,20 +12,28 @@ app.use(cors());
 app.use(express.json());
 
 // Load proto files
-const userProtoPath = '../UserService/src/main/proto/user.proto';
+const userProtoPath = '../UserService/proto/user.proto';
 const orderProtoPath = '../OrderService/src/main/proto/order.proto';
-const offerProtoPath = '../OfferService/src/main/proto/offer.proto';
+const offerProtoPath = '../OfferService/src/protos/offer.proto';
 
-// Create gRPC clients with mock implementations for now
-const mockUserClient = {
-  GetUsers: (request, callback) => {
-    callback(null, { users: [] });
-  },
-  CreateUser: (request, callback) => {
-    callback(null, { id: 1, name: request.name, email: request.email });
-  }
-};
+// Load proto definitions
+const userPackageDefinition = protoLoader.loadSync(userProtoPath, {
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true
+});
 
+const userProto = grpc.loadPackageDefinition(userPackageDefinition).user;
+
+// Create gRPC clients
+const userClient = new userProto.UserService(
+  'localhost:50051',
+  grpc.credentials.createInsecure()
+);
+
+// Mock clients for other services (to be implemented)
 const mockOrderClient = {
   GetOrders: (request, callback) => {
     callback(null, { orders: [] });
@@ -62,20 +70,59 @@ function promisifyGrpcCall(client, methodName) {
 // User endpoints
 app.get('/api/users', async (req, res) => {
   try {
-    const getUsers = promisifyGrpcCall(mockUserClient, 'GetUsers');
+    const getUsers = promisifyGrpcCall(userClient, 'GetAllUsers');
     const response = await getUsers({});
-    res.json(response.users);
+    if (response && response.users) {
+      res.json(response.users);
+    } else {
+      res.json([]);
+    }
   } catch (error) {
+    console.error('Error in /api/users:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 app.post('/api/users', async (req, res) => {
   try {
-    const createUser = promisifyGrpcCall(mockUserClient, 'CreateUser');
+    const createUser = promisifyGrpcCall(userClient, 'CreateUser');
     const response = await createUser(req.body);
     res.json(response);
   } catch (error) {
+    console.error('Error in /api/users POST:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/users/:id', async (req, res) => {
+  try {
+    const getUserById = promisifyGrpcCall(userClient, 'GetUserById');
+    const response = await getUserById({ id: req.params.id });
+    res.json(response);
+  } catch (error) {
+    console.error('Error in /api/users/:id:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    const updateUser = promisifyGrpcCall(userClient, 'UpdateUser');
+    const response = await updateUser({ id: req.params.id, ...req.body });
+    res.json(response);
+  } catch (error) {
+    console.error('Error in /api/users/:id PUT:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const deleteUser = promisifyGrpcCall(userClient, 'DeleteUser');
+    await deleteUser({ id: req.params.id });
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error in /api/users/:id DELETE:', error);
     res.status(500).json({ error: error.message });
   }
 });

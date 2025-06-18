@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  userservice:
+    build: ./microservices/UserService
+    ports:
+      - "50051:50051"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/userservice
+    depends_on:
+      - mongodb
+
+  offerservice:
+    build: ./microservices/OfferService
+    ports:
+      - "50052:50052"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/offerservice
+    depends_on:
+      - mongodb
+
+  orderservice:
+    build: ./microservices/OrderService
+    ports:
+      - "50053:50053"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/orderservice
+    depends_on:
+      - mongodb
+      - userservice
+      - offerservice
+
+  webgateway:
+    build: ./microservices/WebGateway
+    ports:
+      - "3001:3001"
+    environment:
+      - USER_SERVICE_URL=userservice:50051
+      - OFFER_SERVICE_URL=offerservice:50052
+      - ORDER_SERVICE_URL=orderservice:50053
+    depends_on:
+      - userservice
+      - offerservice
+      - orderservice
+
+  # Shell application (main micro frontend host)
+  shell-app:
+    build: ./frontend/shell
+    ports:
+      - "3000:3000"
+    depends_on:
+      - webgateway
+
+  # Auth micro frontend
+  auth-frontend:
+    build: ./frontend/auth
+    ports:
+      - "3002:3002"
+    depends_on:
+      - webgateway
+
+  # Offers micro frontend
+  offers-frontend:
+    build: ./frontend/offers
+    ports:
+      - "3003:3003"
+    depends_on:
+      - webgateway
+
+  # Orders micro frontend
+  orders-frontend:
+    build: ./frontend/orders
+    ports:
+      - "3004:3004"
+    depends_on:
+      - webgateway
+
+volumes:
+  mongodb_data: 

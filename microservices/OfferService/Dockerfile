@@ -25,7 +25,7 @@ COPY . .
 RUN mkdir -p logs
 
 # Expose port
-EXPOSE 8002
+EXPOSE 50052
 
 # Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8002"] 
+CMD ["python", "src/server.py"] 

@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package offer;
+
+// The offer service definition
+service OfferService {
+  // Get all offers
+  rpc GetAllOffers (Empty) returns (OffersResponse) {}
+  
+  // Get an offer by ID
+  rpc GetOfferById (OfferIdRequest) returns (OfferResponse) {}
+  
+  // Create a new offer
+  rpc CreateOffer (CreateOfferRequest) returns (OfferResponse) {}
+  
+  // Update an offer
+  rpc UpdateOffer (UpdateOfferRequest) returns (OfferResponse) {}
+  
+  // Delete an offer
+  rpc DeleteOffer (OfferIdRequest) returns (Empty) {}
+}
+
+// Empty message for requests that don't need parameters
+message Empty {}
+
+// Request message for offer ID
+message OfferIdRequest {
+  int32 id = 1;
+}
+
+// Request message for creating an offer
+message CreateOfferRequest {
+  string title = 1;
+  string description = 2;
+  double price = 3;
+}
+
+// Request message for updating an offer
+message UpdateOfferRequest {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  double price = 4;
+}
+
+// Response message containing a single offer
+message OfferResponse {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  double price = 4;
+  string createdAt = 5;
+  string updatedAt = 6;
+}
+
+// Response message containing multiple offers
+message OffersResponse {
+  repeated OfferResponse offers = 1;
+} 

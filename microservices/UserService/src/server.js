@@ -35,8 +35,9 @@ const userService = {
     getAllUsers: async (call, callback) => {
         try {
             const response = await UserModel.getAllUsers();
-            callback(null, response);
+            callback(null, { users: response.users || [] });
         } catch (error) {
+            console.error('Error in getAllUsers:', error);
             callback({
                 code: grpc.status.INTERNAL,
                 message: error.message

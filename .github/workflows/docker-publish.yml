@@ -1,0 +1,86 @@
+name: Docker Build and Publish to DockerHub
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'microservices/**'
+      - 'frontend/**'
+      - '.github/workflows/docker-publish.yml'
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: animalshop
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push UserService
+        uses: docker/build-push-action@v4
+        with:
+          context: ./microservices/UserService
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-userservice:latest
+
+      - name: Build and push OfferService
+        uses: docker/build-push-action@v4
+        with:
+          context: ./microservices/OfferService
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-offerservice:latest
+
+      - name: Build and push OrderService
+        uses: docker/build-push-action@v4
+        with:
+          context: ./microservices/OrderService
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-orderservice:latest
+
+      - name: Build and push WebGateway
+        uses: docker/build-push-action@v4
+        with:
+          context: ./microservices/WebGateway
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-webgateway:latest
+
+      - name: Build and push Shell App
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend/shell
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-shell:latest
+
+      - name: Build and push Auth Frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend/auth
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-auth-frontend:latest
+
+      - name: Build and push Offers Frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend/offers
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-offers-frontend:latest
+
+      - name: Build and push Orders Frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend/orders
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-orders-frontend:latest 
