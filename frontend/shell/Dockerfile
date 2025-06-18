@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN npx tsc --noEmit
+
 RUN npm run build
 
 FROM nginx:alpine
