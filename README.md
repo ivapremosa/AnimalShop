@@ -212,6 +212,131 @@ ORDER_SERVICE_URL=localhost:50053
 REACT_APP_API_URL=http://localhost:3001
 ```
 
+## 🧪 Izvajanje testov
+
+Projekt vsebuje teste za vse komponente. Sledite navodilom za izvajanje testov za vsako mikrostoritev.
+
+### Predpogoji za teste
+
+```bash
+# Python (za OfferService)
+py -m pip install pytest pytest-asyncio pytest-cov
+
+# Node.js (za UserService in WebGateway)
+npm install
+
+# Java (za OrderService)
+# Maven je že vključen v pom.xml
+```
+
+### OfferService testi (Python)
+
+```bash
+cd microservices/OfferService
+
+# Namestitev odvisnosti
+py -m pip install -r requirements.txt
+
+# Izvajanje testov
+py -m pytest tests/ -v
+
+# Izvajanje testov s pokritostjo kode
+py -m pytest tests/ --cov=services --cov=models --cov-report=term-missing
+```
+
+**Rezultati:** 10 testov, ki preverjajo:
+- Ustvarjanje, branje, posodabljanje in brisanje ponudb
+- Validacijo podatkov
+- STOMP povezave za sporočila
+- Obravnavo napak
+
+### UserService testi (Node.js)
+
+```bash
+cd microservices/UserService
+
+# Namestitev odvisnosti
+npm install
+
+# Izvajanje testov
+node src/tests/repository.test.js
+```
+
+**Rezultati:** Testi preverjajo:
+- Ustvarjanje uporabnikov
+- Preverjanje podvojenih email naslovov
+- Branje, posodabljanje in brisanje uporabnikov
+- Obravnavo napak pri neobstoječih uporabnikih
+
+### OrderService testi (Java)
+
+```bash
+cd microservices/OrderService
+
+# Izvajanje testov
+mvn test
+
+# Izvajanje testov z dodatnimi informacijami
+mvn test -Dtest=OrderServiceTest
+```
+
+**Rezultati:** 16 testov, ki preverjajo:
+- Controller teste (6 testov)
+- Service teste (8 testov)
+- Repository teste (2 testa)
+
+### Vsi testi naenkrat
+
+Za izvajanje vseh testov v projektu:
+
+```bash
+# OfferService testi
+cd microservices/OfferService
+py -m pytest tests/ -v
+
+# UserService testi
+cd ../UserService
+node src/tests/repository.test.js
+
+# OrderService testi
+cd ../OrderService
+mvn test
+```
+
+### CI/CD testi
+
+GitHub Actions avtomatsko izvaja teste ob vsakem push:
+
+```yaml
+# .github/workflows/microservices-ci.yml
+- name: Run OfferService tests
+  run: |
+    cd microservices/OfferService
+    py -m pytest tests/ --cov=services --cov=models --cov-report=xml
+
+- name: Run UserService tests
+  run: |
+    cd microservices/UserService
+    node src/tests/repository.test.js
+
+- name: Run OrderService tests
+  run: |
+    cd microservices/OrderService
+    mvn test
+```
+
+### Pokritost kode
+
+- **OfferService:** 78% pokritost kode
+- **UserService:** Osnovni testi za repository sloj
+- **OrderService:** Obsežni testi za controller, service in repository sloje
+
+### Dodajanje novih testov
+
+1. **Python (OfferService):** Dodajte nove test datoteke v `tests/` direktorij
+2. **Node.js (UserService):** Razširite `repository.test.js` ali dodajte nove test datoteke
+3. **Java (OrderService):** Dodajte nove test klase v `src/test/java/` direktorij
+
 ## 📝 Licenca
 
 MIT License

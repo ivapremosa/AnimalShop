@@ -1,8 +1,9 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-class Offer(BaseModel):
+@dataclass
+class Offer:
     id: str
     product_id: str
     discount_percentage: float
